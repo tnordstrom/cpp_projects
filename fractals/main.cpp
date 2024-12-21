@@ -10,7 +10,8 @@
  */
 
 #include <iostream>
-#include "/cygdrive/c/raylib/raylib/src/raylib.h"
+#include <random>
+#include "/home/tony/raylib/raylib-master/src/raylib.h"
 
 double calc_iteration(double z, double c)
 {
@@ -23,6 +24,10 @@ int main(void)
     //--------------------------------------------------------------------------------------
     const int screenWidth = 800;
     const int screenHeight = 450;
+
+    double result { 0.0 };
+    double xx { 1.0 };
+    double yy { 2.0 };
 
     InitWindow(screenWidth, screenHeight, "raylib [core] example - basic window");
 
@@ -41,10 +46,49 @@ int main(void)
         //----------------------------------------------------------------------------------
         BeginDrawing();
 
-            ClearBackground(RAYWHITE);
+            //ClearBackground(RAYWHITE);
 
             DrawText("Congrats! You created your first window!", 190, 200, 20, LIGHTGRAY);
-
+            #if 0
+            for (int i { 0 }; i < 1000; i++)
+            {
+                int x { 0 };
+                int y { 0 };
+                
+                x = rand() % screenWidth;
+                y = rand() % screenHeight;
+                
+                DrawPixel(x, y, RED);
+            }
+            #endif
+            
+            for (xx = 0; xx < screenWidth; xx++)
+            {
+                for (yy = 0; yy < screenHeight; yy++)
+                {
+             
+                    for (int i { 0 }; i < 10; i++)
+                    {
+                        double first { xx };
+                        result = calc_iteration(first, yy);
+                        first = result;
+                        std::cout << "result = " << result << '\n';
+                        if (result > 1000)
+                        {
+                            std::cout << "iterations = " << i << '\n';
+                            
+                            if (result < 10000)
+                            {
+                                std::cout << "x = " << xx << " y = " << yy << '\n';
+                                DrawPixel(xx, yy, RED);
+                            }
+                            result = 0.0;
+                            break;
+                        }
+                    }       
+                }
+            }
+            
         EndDrawing();
         //----------------------------------------------------------------------------------
     }
